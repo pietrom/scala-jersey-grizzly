@@ -1,13 +1,14 @@
-package com.example.rest;
+package com.example.rest
 
-import java.io.IOException;
+import java.io.IOException
 
-import javax.inject.Inject;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.SecurityContext;
+import javax.inject.Inject
+import javax.ws.rs.WebApplicationException
+import javax.ws.rs.container.ContainerRequestContext
+import javax.ws.rs.container.ContainerRequestFilter
+import javax.ws.rs.core.Response.Status
+import javax.ws.rs.core.SecurityContext
+
  class SecurityFilter @Inject() (private val repo: UserRepository) extends ContainerRequestFilter {
 	override def filter(containerRequest : ContainerRequestContext) : Unit = {
 		// GET, POST, PUT, DELETE, ...
@@ -21,10 +22,10 @@ import javax.ws.rs.core.SecurityContext;
 		}
 
 		// Get the authentification passed in HTTP headers parameters
-		val auth = containerRequest.getHeaderString("authorization");
+		val auth = containerRequest.getHeaderString("authorization")
 
 		// If the user does not have the right (does not provide any HTTP Basic Auth)
-		var secCtx = new MySecurityContext(new MyUser("anonymous"), "", List[String]());
+		var secCtx = new MySecurityContext(new MyUser("anonymous"), "", List[String]())
 		
 		if (auth != null) {
 			// lap : loginAndPassword
@@ -40,7 +41,7 @@ import javax.ws.rs.core.SecurityContext;
 
 				// Our system refuse login and password
 				if (user == null) {
-					throw new WebApplicationException(Status.UNAUTHORIZED);
+					throw new WebApplicationException(Status.UNAUTHORIZED)
 				}
 
 				// We configure your Security Context here
