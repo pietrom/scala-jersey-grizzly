@@ -1,5 +1,7 @@
 package com.example.rest
 
 trait PersonRepository {
-  def getAll() : List[Person]
+  def getAll() : Seq[Person]
+  
+  def save(person: Person)
 }

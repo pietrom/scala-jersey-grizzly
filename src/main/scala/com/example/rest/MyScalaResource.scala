@@ -11,13 +11,15 @@ import javax.annotation.security.RolesAllowed
 import javax.ws.rs.core.SecurityContext
 import javax.ws.rs.PathParam
 import javax.ws.rs.core.Context
+import javax.ws.rs.POST
+import javax.ws.rs.Consumes
 
 
 @Path("myscalaresource")
 class MyScalaResource @Inject() (private val repo: PersonRepository) {
   @GET
   @Produces(Array(MediaType.APPLICATION_JSON))
-  def getAll(): List[Person] = {
+  def getAll(): Seq[Person] = {
     val people = repo.getAll()
     people
   }
@@ -38,5 +40,13 @@ class MyScalaResource @Inject() (private val repo: PersonRepository) {
   	  case None => throw new DataNotFoundException("Person not found: " + id)
   	  case Some(p) => p
   	}
+  }
+  
+  @POST
+  @RolesAllowed(Array("standard"))
+  @Produces(Array(MediaType.APPLICATION_JSON))
+  @Consumes(Array(MediaType.APPLICATION_JSON))
+  def saveNew(person: Person) = {
+    repo.save(person)
   }
 }
