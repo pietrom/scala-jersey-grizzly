@@ -25,7 +25,7 @@ public class MyJavaEventSource {
                         final OutboundEvent.Builder eventBuilder
                         = new OutboundEvent.Builder();
                         eventBuilder.name("message-to-client");
-                        String msg = "Hello world " + i + "!";
+                        String msg = "Hello jworld " + i + "!";
 						eventBuilder.data(String.class, msg);
                         final OutboundEvent event = eventBuilder.build();
                         eventOutput.write(event);

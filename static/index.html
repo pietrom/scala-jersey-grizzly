@@ -1,19 +1,16 @@
 <html>
 <head>
 <title>Jersey on Grizzly Spike</title>
-</head>
-<body>
-	<h1>Hello, Jersey!</h1>
-	<p>
-		From
-		<code>static</code>
-		!
-	</p>
-	<ul></ul>
-	<script type="text/javascript">
-		var evtSource = new EventSource('/myapp/jevents');
+<script type="text/javascript">
+	function pageReady() { 
+		console.log('Page is ready');
+		var evtSource = new EventSource('/myapp/events', { withCredentials: false });
 		console.log(evtSource);
 		var eventList = document.querySelector('ul');
+		
+		evtSource.onopen = function(e) {
+		    console.log("Connection to server opened.", e);
+		};
 
 		evtSource.onmessage = function(e) {
 			console.log('RECEIVED', e);
@@ -23,8 +20,19 @@
 		};
 		
 		evtSource.onerror = function(e) {
-			console.log('ERROR', e)
+			console.log('ERROR', e, e.target.readyState)
+			evtSource.close();
 		};
+	}
 	</script>
+</head>
+<body onload="pageReady()">
+	<h1>Hello, Jersey!</h1>
+	<p>
+		From
+		<code>static</code>
+		!
+	</p>
+	<ul></ul>	
 </body>
 </html>
