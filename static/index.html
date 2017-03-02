@@ -4,6 +4,27 @@
 </head>
 <body>
 	<h1>Hello, Jersey!</h1>
-	<p>From <code>static</code>!</p>
+	<p>
+		From
+		<code>static</code>
+		!
+	</p>
+	<ul></ul>
+	<script type="text/javascript">
+		var evtSource = new EventSource('/myapp/jevents');
+		console.log(evtSource);
+		var eventList = document.querySelector('ul');
+
+		evtSource.onmessage = function(e) {
+			console.log('RECEIVED', e);
+			var newElement = document.createElement("li");
+			newElement.textContent = "message: " + e.data;
+			eventList.appendChild(newElement);
+		};
+		
+		evtSource.onerror = function(e) {
+			console.log('ERROR', e)
+		};
+	</script>
 </body>
 </html>
