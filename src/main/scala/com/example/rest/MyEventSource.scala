@@ -15,11 +15,11 @@ class MyEventSource @Inject() (private val repo: PersonRepository) {
     new Thread(new Runnable {
       override def run(): Unit = {
         try {
-          for (i <- 1 to 6) {
+          for (p <- repo.getAll()) {
             Thread.sleep(250)
             val eventBuilder = new OutboundEvent.Builder()
             //eventBuilder.name("message-to-client")
-            val msg = "Hello world " + i + "!\n\n"
+            val msg = "Hello, " + p.firstName + " " + p.lastName + "!"
             eventBuilder.data(classOf[String], msg)
             val event = eventBuilder.build()
             eventOutput.write(event)
