@@ -5,7 +5,7 @@
 	const app = {}
 	
 	function pageReady() { 
-		var evtSource = new EventSource('/myapp/events', { withCredentials: false });
+		var evtSource = new EventSource('/api/events', { withCredentials: false });
 		var eventList = document.querySelector('ul');
 		var socketEventList = document.querySelector('ol');
 		
@@ -25,7 +25,7 @@
 			evtSource.close();
 		};
 		
-		const socket = new WebSocket('ws://localhost:1920/websockets/game');
+		const socket = new WebSocket('ws://localhost:1919/sockets/chat');
 		socket.addEventListener('open', function (event) {
 		    socket.send('Hello Server!');
 		});
