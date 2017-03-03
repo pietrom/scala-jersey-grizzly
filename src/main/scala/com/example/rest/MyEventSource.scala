@@ -23,7 +23,6 @@ class MyEventSource @Inject() (private val repo: PersonRepository) {
             eventBuilder.data(classOf[String], msg)
             val event = eventBuilder.build()
             eventOutput.write(event)
-            println("Message written " + msg)
           }
         } catch {
           case e: Exception => e.printStackTrace()

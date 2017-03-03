@@ -2,11 +2,12 @@
 <head>
 <title>Jersey on Grizzly Spike</title>
 <script type="text/javascript">
+	const app = {}
+	
 	function pageReady() { 
-		console.log('Page is ready');
 		var evtSource = new EventSource('/myapp/events', { withCredentials: false });
-		console.log(evtSource);
 		var eventList = document.querySelector('ul');
+		var socketEventList = document.querySelector('ol');
 		
 		evtSource.onopen = function(e) {
 		    console.log("Connection to server opened.", e);
@@ -23,7 +24,24 @@
 			console.log('ERROR', e, e.target.readyState)
 			evtSource.close();
 		};
-	}
+		
+		const socket = new WebSocket('ws://localhost:1920/websockets/game');
+		socket.addEventListener('open', function (event) {
+		    socket.send('Hello Server!');
+		});
+
+		// Listen for messages
+		socket.addEventListener('message', function (event) {
+		    console.log('Message from server', event.data);
+		    var newElement = document.createElement("li");
+			newElement.textContent = "message: " + event.data;
+			socketEventList.appendChild(newElement);
+		});
+		
+		app.send = function() {
+			socket.send(document.getElementById('text').value);
+		}
+	}	
 	</script>
 </head>
 <body onload="pageReady()">
@@ -33,6 +51,9 @@
 		<code>static</code>
 		!
 	</p>
-	<ul></ul>	
+	<ul></ul>
+	<input type="text" id="text" value="" />
+	<input type="button" id="button" value="Send" onclick="app.send()" />
+	<ol></ol>
 </body>
 </html>
