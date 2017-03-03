@@ -20,19 +20,8 @@ import org.glassfish.jersey.grizzly2.httpserver.ContainerBuilder
 //import org.glassfish.tyrus.container.grizzly.server.WebSocketAddOn
 
 object App extends App {
-    val BASE_URI = "http://localhost:1919/myapp/"
-
-    def startServer(): HttpServer = {
-        val rc = new AppConfig()
-        GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc)
-    }
-    
-    val server = HttpServer.createSimpleServer("./static", "localhost", 1919);
-    
-    
-    
-    
-    //val listener = new NetworkListener("grizzly", host, port);
+       
+    val server = HttpServer.createSimpleServer(null, "localhost", 1919);
     val listener = server.getListener("grizzly")
     listener.getTransport().getWorkerThreadPoolConfig().setThreadFactory(new ThreadFactoryBuilder()
                 .setNameFormat("grizzly-http-server-%d")
@@ -44,7 +33,6 @@ object App extends App {
 //            listener.setSSLEngineConfig(sslEngineConfigurator);
 //        }
     
-//    server.addListener(listener);
 
         // Map the path to the processor.
         val config = server.getServerConfiguration()
@@ -55,24 +43,10 @@ object App extends App {
 
         config.setPassTraceRequest(true);
 
-//        if (start) {
-//            try {
-//                // Start the server.
-//                server.start();
-//            } catch (final IOException ex) {
-//                server.shutdownNow();
-//                throw new ProcessingException(LocalizationMessages.FAILED_TO_START_SERVER(ex.getMessage()), ex);
-//            }
-//        }
-    
-    //val server = startServer()
-//    val staticHandler = new StaticHttpHandler("./static")
-//    staticHandler.setFileCacheEnabled(false)
-//    server.getServerConfiguration().addHttpHandler(staticHandler, "/static");
+      val staticHandler = new StaticHttpHandler("./static")
+    staticHandler.setFileCacheEnabled(false)
+    server.getServerConfiguration().addHttpHandler(staticHandler, "/");
 
-//    System.out.println(String.format("Jersey app started with WADL available at "
-//        + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
-//    
     val addon = new WebSocketAddOn()
     
     for(listener <- server.getListeners().asScala) {
